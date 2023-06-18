@@ -454,3 +454,8 @@ GO
 ALTER TABLE [Vozidlo] ADD CONSTRAINT [FK_Vozidlo_Je_vlastneno]
 	FOREIGN KEY ([Vlastni]) REFERENCES [Majitel_vozidla] ([Majitel_vozidlaID]) ON DELETE No Action ON UPDATE No Action
 GO
+
+/* Create Indexes */
+CREATE INDEX PobockaNazevIX
+	ON [Pobocka]([Nazev])
+GO

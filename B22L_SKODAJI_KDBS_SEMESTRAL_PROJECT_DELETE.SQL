@@ -146,6 +146,10 @@ ALTER TABLE [Vozidlo]
     DROP CONSTRAINT [PK_Vozidlo]
 GO
 
+/* Drop Indexes */
+DROP INDEX [PobockaNazevIX] ON [Pobocka]
+GO
+
 /* Drop Sequences */
 
 DROP SEQUENCE [SeqAdresaID]
