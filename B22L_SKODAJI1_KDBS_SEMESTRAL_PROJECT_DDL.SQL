@@ -165,7 +165,7 @@ CREATE TABLE [Adresa]
 	[Obec] varchar(64) NOT NULL,
 	[Psc] char(5) NOT NULL,
 	[Ulice] varchar(64) NOT NULL,
-	[AdresaID] int NOT NULL
+	[AdresaID] int NOT NULL IDENTITY (1, 1)
 )
 GO
 
@@ -218,11 +218,11 @@ CREATE TABLE [Objednavka]
 	[Telefon] varchar(14) NOT NULL,
 	[ObjednavkaID] int NOT NULL IDENTITY (1, 1),
 	[AdresaID] int NOT NULL,
-	[Privatni_zakaznikID] int NOT NULL,
+	[StartID] int NOT NULL,
 	[KontraktID] int NULL,
 	[RidicID] int NOT NULL,
-	[Objednal] int NOT NULL,
-	[JizdaID] int NOT NULL,
+	[Objednal] int NULL,
+	[JizdaID] int NULL,
 	[VozidloID] int NULL
 )
 GO
@@ -278,15 +278,15 @@ CREATE TABLE [Vozidlo]
 	[Model] varchar(32) NOT NULL,
 	[Pocet_sedadel] int NOT NULL,
 	[Rz] varchar(8) NOT NULL,
-	[Tovarzni_znacka] varchar(32) NOT NULL,
-	[VozidloID] int NOT NULL IDENTITY (1, 1),
+	[Tovarni_znacka] varchar(32) NOT NULL,
+	[VozidloID] int NOT NULL,
 	[Vlastni] int NOT NULL
 )
 GO
 
 /* Create Sequences */
 
-CREATE SEQUENCE [SeqAdresaID]
+CREATE SEQUENCE [SeqVozidloID]
     AS INT
     START WITH 1
     INCREMENT BY 1;
@@ -302,11 +302,6 @@ GO
 ALTER TABLE [Adresa] 
  ADD CONSTRAINT [PK_Adresa]
 	PRIMARY KEY CLUSTERED ([AdresaID] ASC)
-GO
-
-ALTER TABLE [Adresa]
-  ADD CONSTRAINT [PK_Adresa_Seq]
-      DEFAULT NEXT VALUE FOR SeqAdresaID FOR [AdresaID]
 GO
 
 ALTER TABLE [Firma] 
@@ -369,6 +364,11 @@ ALTER TABLE [Vozidlo]
 	PRIMARY KEY CLUSTERED ([VozidloID] ASC)
 GO
 
+ALTER TABLE [Vozidlo]
+  ADD CONSTRAINT [PK_Vozidlo_Seq]
+      DEFAULT NEXT VALUE FOR SeqVozidloID FOR [VozidloID]
+GO
+
 /* Create Foreign Key Constraints */
 
 ALTER TABLE [Administrativni_pracovnik] ADD CONSTRAINT [FK_Administrativni_pracovnik_Je_zamestnan_na]
@@ -419,6 +419,10 @@ ALTER TABLE [Objednavka] ADD CONSTRAINT [FK_Objednavka_Je_objednana]
 	FOREIGN KEY ([Objednal]) REFERENCES [Privatni_zakaznik] ([Privatni_zakaznikID]) ON DELETE No Action ON UPDATE No Action
 GO
 
+ALTER TABLE [Objednavka] ADD CONSTRAINT [FK_Objednavka_Je_startem]
+	FOREIGN KEY ([StartID]) REFERENCES [Adresa] ([AdresaID]) ON DELETE No Action ON UPDATE No Action
+GO
+
 ALTER TABLE [Osoba] ADD CONSTRAINT [FK_Osoba_Bydli]
 	FOREIGN KEY ([Je obyvana]) REFERENCES [Adresa] ([AdresaID]) ON DELETE No Action ON UPDATE No Action
 GO
@@ -458,4 +462,8 @@ GO
 /* Create Indexes */
 CREATE INDEX PobockaNazevIX
 	ON [Pobocka]([Nazev])
+GO
+
+CREATE INDEX OsobaEmailIX
+	ON [Osoba]([Email])
 GO

@@ -1,3 +1,10 @@
+/* Drop Views */
+DROP VIEW [JIZDY_RIDICU]
+GO
+
+DROP VIEW [NASMLOUVANE_JIZDY]
+GO
+
 /* Drop Foreign Keys */
 
 ALTER TABLE [Administrativni_pracovnik]
@@ -48,6 +55,10 @@ ALTER TABLE [Objednavka]
     DROP CONSTRAINT [FK_Objednavka_Je_objednana]
 GO
 
+ALTER TABLE [Objednavka]
+    DROP CONSTRAINT [FK_Objednavka_Je_startem]
+GO
+
 ALTER TABLE [Osoba]
     DROP CONSTRAINT [FK_Osoba_Bydli]
 GO
@@ -92,10 +103,6 @@ GO
 
 ALTER TABLE [Adresa]
     DROP CONSTRAINT [PK_Adresa]
-GO
-
-ALTER TABLE [Adresa]
-    DROP CONSTRAINT [PK_Adresa_Seq]
 GO
 
 ALTER TABLE [Firma]
@@ -146,13 +153,20 @@ ALTER TABLE [Vozidlo]
     DROP CONSTRAINT [PK_Vozidlo]
 GO
 
+ALTER TABLE [Vozidlo]
+    DROP CONSTRAINT [PK_Vozidlo_Seq]
+GO
+
 /* Drop Indexes */
 DROP INDEX [PobockaNazevIX] ON [Pobocka]
 GO
 
+DROP INDEX [OsobaEmailIX] ON [Osoba]
+GO
+
 /* Drop Sequences */
 
-DROP SEQUENCE [SeqAdresaID]
+DROP SEQUENCE [SeqVozidloID]
 GO
 
 /* Drop Tables */
@@ -197,4 +211,8 @@ DROP TABLE [Rizeni_vozidel]
 GO
 
 DROP TABLE [Vozidlo]
+GO
+
+/* Drop Procedures */
+DROP PROCEDURE REGISTRACE
 GO
